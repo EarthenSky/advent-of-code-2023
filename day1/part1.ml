@@ -1,48 +1,33 @@
-(*
+open Printf
 
-(* util *)
+(* from: https://stackoverflow.com/questions/5774934/how-do-i-read-in-lines-from-a-text-file-in-ocaml *)
+let read_lines file =
+    let chan = open_in file in
+    let lines = ref [] in
 
-let print_list list =
-  List.iter (Printf.printf "%d ") list;
-  Printf.printf "\n"
+    try
+        while true; do
+        lines := input_line chan :: !lines
+        done; !lines
+    with End_of_file ->
+        close_in chan;
+        List.rev !lines
 
-let inc = fun x -> x + 1
+let is_alpha ch = match ch with 'a' .. 'z' | 'A' .. 'Z' -> true | _ -> false
+let is_digit ch = match ch with '0' .. '9' -> true | _ -> false
+let string_as_list str = List.rev (List.init (String.length str) (String.get str))
+let parse_char ch = (int_of_char ch) - (int_of_char '0')
+let char_as_string ch = String.make 1 ch
+let first_and_last_chars_as_int list = int_of_string (char_as_string (List.hd list) ^ (char_as_string (List.nth list (List.length list - 1))))
 
-let any_mod list i =
-  List.exists (fun m -> i mod m = 0) list
-
-(* const *)
-
-let limit = 1000
-
-(* behaviour *)
+let file = "day1/input"
 
 let () = 
-  let nums = List.init (limit - 1) inc in
-  let multiples_of_3_5 = List.filter (any_mod [3; 5]) nums in 
-  let result = List.fold_left ( + ) 0 multiples_of_3_5 in
-  print_int result;
-  print_endline ""
-
-*)
-
-(* TODO: readfile [this] *)
-
-(* docs: https://ocaml.org/docs/file-manipulation *)
-let file = "input1"
-let () = 
-  let ic = open_in file in
-  try
-    let line = input_line ic in
-    (* read line, discard \n *)
-    print_endline line;
-    (* write the result to stdout *)
-    flush stdout;
-    (* write on the underlying device now *)
-    close_in ic
-    (* close the input channel *)
-  with e ->
-    (* some unexpected exception occurs *)
-    close_in_noerr ic;
-    (* emergency closing *)
-    raise e
+    let lines = read_lines file in
+    let concat s c = c :: s in
+    let remove_chars line = List.fold_left concat [] (List.filter is_digit (string_as_list line)) in
+    let noletters = List.map remove_chars lines in
+    let duplicate_singles = List.map (fun list -> if (List.length list) == 1 then (List.hd list) :: list else list) noletters in
+    let sum = List.fold_left (fun a list -> a + (first_and_last_chars_as_int list)) 0 duplicate_singles in
+    print_int sum;
+    print_newline ()
