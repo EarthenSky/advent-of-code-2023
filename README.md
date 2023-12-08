@@ -2,7 +2,7 @@
 My solutions to advent of code 2023. This year's theme: "polar extremes"
 
 # languages
-- [x] ocaml - 1
+- [x] ocaml - 1, 2
 - [ ] idris
 - [ ] handwritten assembly
 - [ ] LLVM

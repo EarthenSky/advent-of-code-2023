@@ -15,7 +15,6 @@ let read_lines file =
 
 let is_digit ch = match ch with '0' .. '9' -> true | _ -> false
 let list_of_string str = List.init (String.length str) (String.get str)
-let char_as_string ch = String.make 1 ch
 let two_ints_as_int x1 x2 = int_of_string ((string_of_int x1) ^ (string_of_int x2))
 
 let rec first_digit_in_line line depth = match line with

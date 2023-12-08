@@ -21,7 +21,6 @@ let char_as_string ch = String.make 1 ch
 let first_and_last_chars_as_int list = int_of_string (char_as_string (List.hd list) ^ (char_as_string (List.nth list (List.length list - 1))))
 
 let file = "day1/input"
-
 let () = 
     let lines = read_lines file in
     let concat s c = c :: s in
