@@ -1,12 +1,18 @@
 # advent-of-code-2023
- my solutions to advent of code 2023
+My solutions to advent of code 2023. This year's theme: "polar extremes"
 
-# languages:
-- ocaml
-- idris
-- handwritten assembly
-- LLVM
-- other IR languages?
+# languages
+- [x] ocaml - 1
+- [ ] idris
+- [ ] handwritten assembly
+- [ ] LLVM
+- [ ] other IR languages?
+- [ ] F#
+- [ ] other functional programming languages?
+
+# instructions
+
+Please run this on linux or wsl
 
 ## ocaml
 
@@ -19,5 +25,6 @@ eval $(opam env)
 opam install dune ocaml-lsp-server odoc ocamlformat utop
 
 ### usage
-- iterpreter: ocaml file.ml
-- compiled: ocamlbuild file.native
+eval $(opam env)
+- iterpreter: ocaml day1/part1.ml
+- compiled: ocamlbuild day1/part1.native
