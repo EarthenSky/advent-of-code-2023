@@ -3,7 +3,7 @@ My solutions to advent of code 2023. This year's theme: "polar extremes"
 
 # languages
 - [x] ocaml - 1, 2, 3
-- [/] idris2 - 4
+- [x] idris2 - 4
 - [ ] QBE
 - [ ] LLVM
 - [ ] other IR languages?
@@ -31,7 +31,7 @@ eval $(opam env)
 
 ### my take
 - less slick version of haskell, but with the promise that you can fall back to mutable code if needed for performance reasons
-- 
+- the merge between functional & imperative style is not clean; I felt that I was discouraged from doing any mutable code, and when I did do it, it wasn't as good. Mutable code is not first class.
 - 6/10
 
 ## idris2
@@ -45,9 +45,11 @@ idris2 part1.idr -o part1
 ./build/exec/part1
 
 ### my take
-- haskell but with no documentation and requiring detail to the irrelevant (or something along those lines)
+- haskell but with no documentation and requiring detail for the irrelevant (or something along those lines)
 - an accidental low-level language
-- 1/10
+- (but if I read the book in more detail, it might have been better...)
+- I also could not understand the documentation at ALL, which is fair since the language is still under development
+- 2/10
 
 ## QBE
 

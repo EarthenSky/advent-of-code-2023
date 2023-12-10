@@ -9,8 +9,8 @@ exists p [] = False
 exists p (x :: xs) = if p x then True else exists p xs 
 
 myfoldl : (Int -> String -> List String -> Int) -> Int -> List String -> List String -> Int
-myfoldl f acc [] listWin = acc
-myfoldl f acc (x :: xs) listWin = (myfoldl f (f acc x listWin) xs listWin)
+myfoldl f acc [] scratch = acc
+myfoldl f acc (x :: xs) scratch = (myfoldl f (f acc x scratch) xs scratch)
 
 myfilter : (a -> Bool) -> List a -> List a
 myfilter p [] = []
@@ -19,15 +19,21 @@ myfilter p (x :: xs) = if p x then x :: (myfilter p xs) else myfilter p xs
 myfilter1 : (a -> Bool) -> List1 a -> List a
 myfilter1 p (x ::: xs) = if p x then x :: (myfilter p xs) else myfilter p xs 
 
+mylength : List a -> Int
+mylength [] = 0
+mylength (x :: xs) = 1 + (mylength xs)
+
 myhead : List String -> String
 myhead xs = case xs of
     x :: xs => x
     [] => "Error"
 
-exp : Int -> Int -> Int 
-exp a 0 = 1
-exp a 1 = a * 1
-exp a b = a * (exp a (b - 1))
+createTo : Int -> Int -> List Int
+createTo 0 fill = []
+createTo x fill = fill :: createTo (x - 1) fill
+
+-- -------------------------
+-- inputs:
 
 test : String
 test = """
@@ -263,14 +269,36 @@ input = """
     Card 220:  7 42 25 84 54 11 88  6 55 73 | 86  5 82 70 49 80 21 36 16 34 17 77 44 74 61  1  4 39 45 47  3 81 57 60 24
 """
 
+-- -------------------------
+
 main : IO ()
 main = 
     let theLines = lines input in
     let splittedLines = map (\xs => split (== ':') xs) theLines in
     let splittedLines = map (\lineList => split (== '|') (snd1 lineList)) splittedLines in
-    let scores = map (\x => let n = (scoresFromDualStrings x) in if n == 0 then 0 else exp 2 (n-1)) splittedLines in
-    putStrLn (cast (foldl (+) 0 scores))
+    let scores = map (\x => scoresFromDualStrings x) splittedLines in
+    
+    let countList = createTo (mylength theLines) 1 in
+    let (final_score, list) = foldl doIter (0, countList) scores in
+    putStrLn (cast final_score)
+    
     where 
+        addToList : Int -> Int -> List Int -> List Int
+        addToList val topN [] = []
+        addToList val 0 list = list
+        addToList val topN (x :: xs) = (x + val) :: addToList val (topN - 1) xs
+
+        doIter : (Int, List Int) -> Int -> (Int, List Int)
+        doIter (a1, a2) score =
+            case a2 of
+                [] => (a1, [])
+                x :: xs =>
+                    if score == 0 then
+                        (a1 + x, xs)
+                    else 
+                        let newXs = addToList x score xs in
+                        (a1 + x, newXs)
+
         snd1 : List1 String -> String
         snd1 list = case list of
             x1 ::: xs => case xs of
