@@ -22,7 +22,7 @@ int main() {
 
     FILE* fptr = fopen("input", "r");
     if (fptr == NULL) {
-        printf("could not find input\n");
+        perror("could not find './input' file");
         return 1;
     }
 
@@ -37,5 +37,10 @@ int main() {
     }
 
     printf("total %d\n", total);
+
+    if (fclose(fptr) == EOF) {
+        perror("failed to close file");
+        return 1;
+    }
     return 0;
 }

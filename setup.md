@@ -40,5 +40,13 @@ idris2 part1.idr -o part1
 - 2/10
 
 ## C
+
 - install gcc
 - run the command at the top of the c file
+
+### my take
+- the behaviour of fscanf is pretty esoteric, but syntax choices are pretty clear & reasonable
+- struct init & usage is a bit weird, but also a bit comfy. I wish parens were not needed for named struct init... (or no name needed at all)
+- when working with several types, printing & conversion is a bit obtuse
+- 
+- 8.5/10
