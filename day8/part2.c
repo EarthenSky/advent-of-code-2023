@@ -26,11 +26,12 @@ int bsearch_node_compare(const void* a, const void* b) {
 // re: https://stackoverflow.com/questions/16088282/is-there-a-128-bit-integer-in-gcc
 
 // we want to solve (ax + b) % c = d
+// NOTE: you may want to do (d % c) first
 size_t solve_crt(size_t a, size_t b, size_t c, size_t d) {
     if (a >= c) {
         size_t x = 0;
         size_t value = b;
-        while (value != (d % c)) {
+        while (value != d) {
             value = (b + (a * x)) % c;
             x += 1;
         }
@@ -117,6 +118,7 @@ int main() {
         }
     }
 
+    // TODO: clean up this function into more functions
     size_t steps = 0;
     while (true) {
         for (size_t si = 0; si < num_starts; si++) {
@@ -165,15 +167,18 @@ int main() {
             }
 
             if (all_cycles) {
-                size_t total_steps = 0;
+                size_t a = cycle_size[0];
+                size_t b = steps - cycle_offset[0];
 
-                // TODO: how to make sure that the CRT can be applied to multiple layers & the cycle size is known?
-                //for (size_t ci = 0; ci < num_starts; ci++) {
-                //    printf("attempt: %ld\n", solve_crt(20777, 41554, 15517, 41554-10520));
-                //}
+                // solve the CRT for all series of equations
+                for (size_t ci = 1; ci < num_starts; ci++) {
+                    size_t c = cycle_size[ci];
+                    size_t d = steps - cycle_offset[ci];
+                    b = solve_crt(a, b, c, d % c);
+                    a = lcm(a, c);
+                }
 
-                //printf("size: %ld, offset: %ld\n", cycle_size[ci], cycle_offset[ci]);
-                //printf("steps: %ld\n", steps);
+                printf("total_steps: %ld\n", b);
                 return 0;
             }
         }

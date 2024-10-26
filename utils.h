@@ -74,4 +74,24 @@ int compare_int_desc(const void* ptr1, const void* ptr2) {
     }
 }
 
+// TODO: understand how this works in more detail
+size_t gcd(size_t a, size_t b) {
+    while (1) {
+        if (a == 0)
+            return b;
+        b %= a;
+        if (b == 0)
+            return a;
+        a %= b;
+    }
+}
+
+size_t lcm(size_t a, size_t b) {
+    size_t the_gcd = gcd(a, b);
+    if (the_gcd != 0)
+        return (a / the_gcd) * b;
+    else
+        return 0;
+}
+
 #endif
